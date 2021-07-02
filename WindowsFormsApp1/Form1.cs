@@ -5,10 +5,10 @@ namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
-        private int num = 0;
-        private int res = 0;
+        private double num = 0;
+        private double res = 0;
 
-        private string num_tmp = String.Empty;
+        private string numTmp = String.Empty;
         private string operation = String.Empty;
 
         public Form1()
@@ -30,28 +30,36 @@ namespace WindowsFormsApp1
                 {
                     if (res == 0) res = num;
 
-                    num_tmp += b.Text;
-                    equationTextBox.Text += b.Text + " ";
+                    numTmp += b.Text;
+                    equationTextBox.Text += b.Text;
+                }
+
+                else if (b.Text == ",")
+                {
+                    numTmp += ".";
+                    equationTextBox.Text += b.Text;
                 }
 
                 else
                 {
-                    if (resultTextBox.Text != String.Empty) res = Int32.Parse(resultTextBox.Text);
+                    if (resultTextBox.Text != String.Empty) res = Convert.ToDouble(resultTextBox.Text);
 
-                    if (num_tmp != String.Empty) num = Int32.Parse(num_tmp);
+                    if (numTmp != String.Empty) num = Convert.ToDouble(numTmp);
 
-                    if (b.Text == "+" || b.Text == "-" || b.Text == "x" || b.Text == "/")
+
+                    if (b.Text == "+" || b.Text == "-" || b.Text == "x" || b.Text == "/" || b.Text == "%")
                     {
                         operation = b.Text;
-                        equationTextBox.Text += b.Text + " ";
+                        equationTextBox.Text += " " + b.Text + " ";
                     }
 
-                    num_tmp = string.Empty;
+                    numTmp = string.Empty;
 
                     if (operation == "+") res += num;
                     else if (operation == "-") res -= num;
                     else if (operation == "x") res *= num;
                     else if (operation == "/" && num != 0) res /= num;
+                    else if (operation == "%" && num != 0) res = res / 100 * num;
 
                     if (b.Text == "=")
                     {
@@ -60,6 +68,12 @@ namespace WindowsFormsApp1
                     }
 
                     else if (b.Text == "C")
+                    {
+                        equationTextBox.Text = String.Empty;
+                        num = 0;
+                        res = 0;
+                    }
+                    else if (b.Text == "CE")
                     {
                         equationTextBox.Text = String.Empty;
                         resultTextBox.Text = String.Empty;
@@ -74,5 +88,7 @@ namespace WindowsFormsApp1
                 MessageBox.Show($"Message: {ex.Message}\n\nStack Trace: {ex.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
     }
 }
